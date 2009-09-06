@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-09-03T14:54:41
 # -------------------------------------------------
-TARGET = WaveLab4
+TARGET = WaveLab
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \

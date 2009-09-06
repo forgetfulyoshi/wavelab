@@ -47,10 +47,12 @@ private:
     VectorWidget * vectorWidget;
     DataContainer * dataContainer;
     QTimer timer;
+    void icon();
 
 private slots:
     void show_waveWidget();
     void show_vectorWidget();
+    void show_about();
 
     void stepWidgets();
 

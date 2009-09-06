@@ -26,14 +26,13 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 #include <qwt_plot_curve.h>
 #include "datacontainer.h"
 
-WaveRender::WaveRender(DataContainer * d, WaveWidget * w)
+WaveRender::WaveRender(DataContainer * d, WaveWidget * w):
+        dataContainer(d),
+        wavePlot(w),
+        wave1(new QwtPlotCurve("Wave 1")),
+        wave2(new QwtPlotCurve("Wave 2")),
+        supWave(new QwtPlotCurve("Superposition Wave"))
 {
-    dataContainer = d;
-    wavePlot = w;
-
-    wave1 = new QwtPlotCurve("Wave 1");
-    wave2 = new QwtPlotCurve("Wave 2");
-    supWave = new QwtPlotCurve("Superposition Wave");
 }
 
 WaveRender::~WaveRender()

@@ -20,13 +20,14 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QtGui>
 
 #include "datacontainer.h"
 #include "wavewidget.h"
 #include "vectorwidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow)
+        : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -37,12 +38,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&timer, SIGNAL(timeout()), this, SLOT(stepWidgets()));
     connect(ui->actionWave_Supperposition, SIGNAL(triggered()), this, SLOT(show_waveWidget()));
     connect(ui->actionVectors, SIGNAL(triggered()), this, SLOT(show_vectorWidget()));
+    connect(ui->actionAbout_WaveLab, SIGNAL(triggered()), this, SLOT(show_about()));
+    connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     ui->gridLayout_2->addWidget(waveWidget, 0, 1, -1, -1);
     ui->gridLayout_2->addWidget(vectorWidget, 0, 1, -1, -1);
 
     show_waveWidget();
-
 }
 
 MainWindow::~MainWindow()
@@ -85,6 +87,30 @@ void MainWindow::show_vectorWidget()
 
     vectorWidget->show();
 
+}
+
+void MainWindow::show_about()
+{
+    QMessageBox::about(this, tr("About WaveLab"),
+                       tr("WaveLab\n\n"
+
+                          "Copyright 2009 James Benton Anglin\n\n "
+                          "This program is distributed under the terms of the GNU General Public License "
+
+                          "This file is part of WaveLab. "
+
+                          "WaveLab is free software: you can redistribute it and/or modify "
+                          "it under the terms of the GNU General Public License as published by "
+                          "the Free Software Foundation, either version 3 of the License, or "
+                          "(at your option) any later version. "
+
+                          "WaveLab is distributed in the hope that it will be useful, "
+                          "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+                          "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
+                          "GNU General Public License for more details. "
+
+                          "You should have received a copy of the GNU General Public License "
+                          "along with WaveLab.  If not, see <http://www.gnu.org/licenses/>."));
 }
 
 void MainWindow::on_runButton_clicked()

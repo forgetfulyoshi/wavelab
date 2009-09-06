@@ -22,6 +22,9 @@ FORMS += mainwindow.ui
 # Added for Qwt
 # --------------------------------------------
 QWT_ROOT = /usr/local/qwt-5.2.0
+win32 {
+    QWT_ROOT = C:/Qwt-5.2.0
+}
 QWTLIB = qwt
 CONFIG += static
 INCLUDEPATH += $${QWT_ROOT}/include

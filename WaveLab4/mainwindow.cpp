@@ -34,8 +34,8 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::MainWindow),
-        widgets(QMap<QString, LabWidget *>()),
-        dataContainer(new DataContainer(ui))
+        dataContainer(new DataContainer(ui)),
+        widgets(QMap<QString, LabWidget *>())
 {
     ui->setupUi(this);
 
@@ -43,8 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     widgets["VectorWidget"] = new VectorWidget(dataContainer, ui->centralWidget);
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(stepWidgets()));
-    //connect(ui->actionWave_Supperposition, SIGNAL(triggered()), this, SLOT(showWidget()));
-    //connect(ui->actionVectors, SIGNAL(triggered()), widgets["VectorWidget"], SLOT(show()));
+
     connect(ui->actionAbout_WaveLab, SIGNAL(triggered()), this, SLOT(show_about()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 

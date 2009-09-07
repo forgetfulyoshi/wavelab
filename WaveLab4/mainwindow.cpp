@@ -22,36 +22,55 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 #include "ui_mainwindow.h"
 #include <QtGui>
 
+#include <iostream>
+
 #include "datacontainer.h"
+#include "labwidget.h"
 #include "wavewidget.h"
 #include "vectorwidget.h"
+#include <QMap>
+#include <QString>
 
-MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) :
+        QMainWindow(parent),
+        ui(new Ui::MainWindow),
+        widgets(QMap<QString, LabWidget *>()),
+        dataContainer(new DataContainer(ui))
 {
     ui->setupUi(this);
 
-    dataContainer = new DataContainer(ui);
-    waveWidget = new WaveWidget(dataContainer, ui->centralWidget);
-    vectorWidget = new VectorWidget(dataContainer, ui->centralWidget);
+    widgets["WaveWidget"] = new WaveWidget(dataContainer, ui->centralWidget);
+    widgets["VectorWidget"] = new VectorWidget(dataContainer, ui->centralWidget);
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(stepWidgets()));
-    connect(ui->actionWave_Supperposition, SIGNAL(triggered()), this, SLOT(show_waveWidget()));
-    connect(ui->actionVectors, SIGNAL(triggered()), this, SLOT(show_vectorWidget()));
+    //connect(ui->actionWave_Supperposition, SIGNAL(triggered()), this, SLOT(showWidget()));
+    //connect(ui->actionVectors, SIGNAL(triggered()), widgets["VectorWidget"], SLOT(show()));
     connect(ui->actionAbout_WaveLab, SIGNAL(triggered()), this, SLOT(show_about()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-    ui->gridLayout_2->addWidget(waveWidget, 0, 1, -1, -1);
-    ui->gridLayout_2->addWidget(vectorWidget, 0, 1, -1, -1);
+    QMap<QString, LabWidget *>::const_iterator i = widgets.constBegin();
+    while (i != widgets.constEnd()) {
+        ui->gridLayout_2->addWidget(i.value(), 0, 1, -1, -1);
+        ++i;
+    }
 
-    show_waveWidget();
+    showWidget(widgets["WaveWidget"]);
 }
 
 MainWindow::~MainWindow()
 {
-    delete waveWidget;
     delete dataContainer;
     delete ui;
+}
+
+void MainWindow::on_actionWave_Supperposition_triggered()
+{
+    showWidget(widgets["WaveWidget"]);
+}
+
+void MainWindow::on_actionVectors_triggered()
+{
+    showWidget(widgets["VectorWidget"]);
 }
 
 void MainWindow::stepWidgets()
@@ -64,29 +83,29 @@ void MainWindow::stepWidgets()
 
     ui->lcdNumber->display(dataContainer->data[DataContainer::ElapsedTime]);
 
-    waveWidget->step();
-    vectorWidget->step();
+    // Step all the widgets
+    QMap<QString, LabWidget *>::const_iterator i = widgets.constBegin();
+    while (i != widgets.constEnd()) {
+        i.value()->step();
+        ++i;
+    }
 }
 
-void MainWindow::show_waveWidget()
+void MainWindow::showWidget(LabWidget * widget)
 {
-    vectorWidget->hide();
+    // First, go through and hide all the widgets
+    QMap<QString, LabWidget *>::const_iterator i = widgets.constBegin();
+    while (i != widgets.constEnd()) {
+        i.value()->hide();
+        ++i;
+    }
 
-    connect(ui->wave1_toggle, SIGNAL(stateChanged(int)), waveWidget, SLOT(show_wave1(int)));
-    connect(ui->wave2_toggle, SIGNAL(stateChanged(int)), waveWidget, SLOT(show_wave2(int)));
+    // Then, connect the appropriate signals and slots (inherited to all widgets by LabWidget)
+    connect(ui->wave1_toggle, SIGNAL(stateChanged(int)), widget, SLOT(show_wave1(int)));
+    connect(ui->wave2_toggle, SIGNAL(stateChanged(int)), widget, SLOT(show_wave2(int)));
 
-    waveWidget->show();
-}
-
-void MainWindow::show_vectorWidget()
-{
-    waveWidget->hide();
-
-    connect(ui->wave1_toggle, SIGNAL(stateChanged(int)), vectorWidget, SLOT(show_wave1(int)));
-    connect(ui->wave2_toggle, SIGNAL(stateChanged(int)), vectorWidget, SLOT(show_wave2(int)));
-
-    vectorWidget->show();
-
+    // Finally, show the desired widget
+    widget->show();
 }
 
 void MainWindow::show_about()
@@ -96,8 +115,6 @@ void MainWindow::show_about()
 
                           "Copyright 2009 James Benton Anglin\n\n "
                           "This program is distributed under the terms of the GNU General Public License "
-
-                          "This file is part of WaveLab. "
 
                           "WaveLab is free software: you can redistribute it and/or modify "
                           "it under the terms of the GNU General Public License as published by "
@@ -142,6 +159,10 @@ void MainWindow::on_resetButton_clicked()
     ui->runButton->setText("Run");
     ui->lcdNumber->display(0.0);
 
-    waveWidget->reset();
-    vectorWidget->reset();
+    // Reset all the widgets
+    QMap<QString, LabWidget *>::const_iterator i = widgets.constBegin();
+    while (i != widgets.constEnd()) {
+        i.value()->reset();
+        ++i;
+    }
 }

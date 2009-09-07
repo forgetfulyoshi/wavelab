@@ -21,23 +21,21 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef WAVEWIDGET_H
 #define WAVEWIDGET_H
 
-#include <qwt_plot.h>
+#include "labwidget.h"
 
 namespace Ui {
     class WaveWidget;
 }
 
-class DataContainer;
 class WaveRender;
 
-class WaveWidget : public QwtPlot {
+class WaveWidget : public LabWidget {
     Q_OBJECT
 public:
     WaveWidget(DataContainer *, QWidget * parent = 0);
     ~WaveWidget();
 
 private:
-    DataContainer * dataContainer;
     WaveRender * waveRender;
 
  public slots:

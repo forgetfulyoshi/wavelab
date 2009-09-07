@@ -21,16 +21,15 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef VECTORWIDGET_H
 #define VECTORWIDGET_H
 
-#include <qwt_plot.h>
+#include "labwidget.h"
 
 namespace Ui {
     class VectorWidget;
 }
 
-class DataContainer;
 class VectorRender;
 
-class VectorWidget : public QwtPlot {
+class VectorWidget : public LabWidget {
     Q_OBJECT
 public:
 
@@ -38,7 +37,6 @@ public:
     ~VectorWidget();
 
 private:
-    DataContainer * dataContainer;
     VectorRender * vectorRender;
 
 public slots:

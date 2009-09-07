@@ -20,15 +20,12 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "vectorwidget.h"
 
-#include "datacontainer.h"
 #include "vectorrender.h"
 
 VectorWidget::VectorWidget(DataContainer * d, QWidget *parent) :
-    dataContainer(d)
+    LabWidget(d, parent),
+    vectorRender(new VectorRender(dataContainer, this))
 {
-    setParent(parent);
-
-    vectorRender = new VectorRender(dataContainer, this);
 }
 
 VectorWidget::~VectorWidget()

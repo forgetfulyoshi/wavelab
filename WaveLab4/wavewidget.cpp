@@ -20,16 +20,12 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "wavewidget.h"
 
-#include "datacontainer.h"
 #include "waverender.h"
 
 WaveWidget::WaveWidget(DataContainer * d, QWidget * parent) :
-    dataContainer(d)
+        LabWidget(d, parent),
+        waveRender(new WaveRender(dataContainer, this))
 {
-    setParent(parent);
-
-    waveRender = new WaveRender(dataContainer, this);
-
     setAxisTitle(0, "Displacement");
     setAxisTitle(2, "Time");
 }

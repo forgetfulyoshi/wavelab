@@ -23,14 +23,15 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtGui/QMainWindow>
 #include <QTimer>
+#include <QMap>
+#include <QString>
 
 namespace Ui
 {
     class MainWindow;
 }
 
-class WaveWidget;
-class VectorWidget;
+class LabWidget;
 class DataContainer;
 
 class MainWindow : public QMainWindow
@@ -43,15 +44,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    WaveWidget * waveWidget;
-    VectorWidget * vectorWidget;
     DataContainer * dataContainer;
     QTimer timer;
-    void icon();
+    QMap<QString, LabWidget *> widgets;
 
 private slots:
-    void show_waveWidget();
-    void show_vectorWidget();
+    void showWidget(LabWidget *);
     void show_about();
 
     void stepWidgets();
@@ -59,6 +57,9 @@ private slots:
     void on_runButton_clicked();
     void on_stepButton_clicked();
     void on_resetButton_clicked();
+
+    void on_actionWave_Supperposition_triggered();
+    void on_actionVectors_triggered();
 
 };
 

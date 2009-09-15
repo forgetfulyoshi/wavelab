@@ -22,12 +22,11 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 #define WAVEWIDGET_H
 
 #include "labwidget.h"
+#include <QVector>
 
-namespace Ui {
-    class WaveWidget;
-}
-
-class WaveRender;
+class DataContainer;
+class QwtPlotCurve;
+class QwtPlotScaleItem;
 
 class WaveWidget : public LabWidget {
     Q_OBJECT
@@ -35,14 +34,37 @@ public:
     WaveWidget(DataContainer *, QWidget * parent = 0);
     ~WaveWidget();
 
-private:
-    WaveRender * waveRender;
+    virtual void setXScale(double);
 
- public slots:
-    void step();
-    void reset();
-    void show_wave1(int);
-    void show_wave2(int);
+public slots:
+    virtual void step();
+    virtual void reset();
+    virtual void show_wave1(int);
+    virtual void show_wave2(int);
+
+private:
+    void getCurrentValues();
+
+    WaveWidget * wavePlot;
+
+    QwtPlotCurve * wave1;
+    QwtPlotCurve * wave2;
+    QwtPlotCurve * supWave;
+
+    QwtPlotScaleItem * xScale;
+    QwtPlotScaleItem * yScale;
+
+    QVector<double> wave1_y;
+    QVector<double> wave2_y;
+    QVector<double> supWave_y;
+    QVector<double> x;
+
+    double wave1_frequency;
+    double wave1_amplitude;
+    double wave2_frequency;
+    double wave2_amplitude;
+    double phaseShift;
+    double elapsedTime;
 };
 
 #endif // WAVEWIDGET_H

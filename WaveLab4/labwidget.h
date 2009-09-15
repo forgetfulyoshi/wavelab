@@ -11,12 +11,14 @@ class LabWidget : public QwtPlot
 public:
     LabWidget(DataContainer *, QWidget * parent = 0);
     virtual ~LabWidget();
+    virtual void setYScale(double);
+    virtual void setXScale(double);
 
 public slots:
     virtual void step() = 0;
     virtual void reset() = 0;
-    virtual void show_wave1(int) = 0;
-    virtual void show_wave2(int) = 0;
+    virtual void show_wave1(int);
+    virtual void show_wave2(int);
 
 protected:
     DataContainer * dataContainer;

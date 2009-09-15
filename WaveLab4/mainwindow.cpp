@@ -47,13 +47,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAbout_WaveLab, SIGNAL(triggered()), this, SLOT(show_about()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
+    ui->gridLayout_5->addWidget(widgets["VectorWidget"], 1, 0, 1,1);
+    ui->gridLayout_5->addWidget(widgets["WaveWidget"], 1, 1, 1, 1);
+
     QMap<QString, LabWidget *>::const_iterator i = widgets.constBegin();
     while (i != widgets.constEnd()) {
-        ui->gridLayout_2->addWidget(i.value(), 0, 1, -1, -1);
+        connect(ui->wave1_toggle, SIGNAL(stateChanged(int)), i.value(), SLOT(show_wave1(int)));
+        connect(ui->wave2_toggle, SIGNAL(stateChanged(int)), i.value(), SLOT(show_wave2(int)));
         ++i;
     }
-
-    showWidget(widgets["WaveWidget"]);
 }
 
 MainWindow::~MainWindow()
@@ -62,15 +64,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_actionWave_Supperposition_triggered()
-{
-    showWidget(widgets["WaveWidget"]);
-}
-
-void MainWindow::on_actionVectors_triggered()
-{
-    showWidget(widgets["VectorWidget"]);
-}
 
 void MainWindow::stepWidgets()
 {
@@ -80,31 +73,18 @@ void MainWindow::stepWidgets()
         timer.start(ui->time->value() * 1000);
     }
 
+    double range = dataContainer->data[DataContainer::Wave1_Amp] + dataContainer->data[DataContainer::Wave2_Amp];
+
     ui->lcdNumber->display(dataContainer->data[DataContainer::ElapsedTime]);
 
     // Step all the widgets
     QMap<QString, LabWidget *>::const_iterator i = widgets.constBegin();
     while (i != widgets.constEnd()) {
+        i.value()->setYScale(range);
+        i.value()->setXScale(range);
         i.value()->step();
         ++i;
     }
-}
-
-void MainWindow::showWidget(LabWidget * widget)
-{
-    // First, go through and hide all the widgets
-    QMap<QString, LabWidget *>::const_iterator i = widgets.constBegin();
-    while (i != widgets.constEnd()) {
-        i.value()->hide();
-        ++i;
-    }
-
-    // Then, connect the appropriate signals and slots (inherited to all widgets by LabWidget)
-    connect(ui->wave1_toggle, SIGNAL(stateChanged(int)), widget, SLOT(show_wave1(int)));
-    connect(ui->wave2_toggle, SIGNAL(stateChanged(int)), widget, SLOT(show_wave2(int)));
-
-    // Finally, show the desired widget
-    widget->show();
 }
 
 void MainWindow::show_about()

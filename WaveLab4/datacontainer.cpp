@@ -22,7 +22,8 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PI 3.14159
 
-DataContainer::DataContainer(Ui::MainWindow * control): ui(control)
+DataContainer::DataContainer(Ui::MainWindow * control): 
+        ui(control)
 {
     data[Wave1_Amp]     = 0.0;
     data[Wave1_Freq]    = 0.0;

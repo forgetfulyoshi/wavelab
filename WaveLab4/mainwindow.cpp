@@ -20,16 +20,16 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QtGui>
 
-#include <iostream>
+#include <QtGui>
+#include <QMap>
+#include <QString>
 
 #include "datacontainer.h"
 #include "labwidget.h"
 #include "wavewidget.h"
 #include "vectorwidget.h"
-#include <QMap>
-#include <QString>
+
 
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),

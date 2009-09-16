@@ -56,7 +56,6 @@ WaveWidget::~WaveWidget()
 
 void WaveWidget::setXScale(double)
 {
-    setAxisAutoScale(2);
     setAxisScale(2, dataContainer->data[DataContainer::ElapsedTime], dataContainer->data[DataContainer::ElapsedTime] - 10);
 }
 

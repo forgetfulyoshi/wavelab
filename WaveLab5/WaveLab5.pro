@@ -24,3 +24,4 @@ SOURCES += wavewidget.cpp \
     main.cpp \
     labwidget.cpp \
     datacontainer.cpp
+FORMS += mainwindow.ui

@@ -7,6 +7,7 @@ LabWidget::LabWidget(DataContainer * d, QWidget * parent):
     setParent(parent);
 }
 
+
 LabWidget::~LabWidget()
 {
 

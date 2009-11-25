@@ -43,13 +43,16 @@ private:
     void getCurrentValues();
     void clear();
 
-    QwtPlotCurve * intensityVector;
+    QwtPlotCurve * intensityPhasor;
+    QwtPlotCurve * resultantVector;
 
     QwtPlotScaleItem * xScale;
     QwtPlotScaleItem * yScale;
 
     QVector<double> intensity_x;
     QVector<double> intensity_y;
+    QVector<double> resultant_x;
+    QVector<double> resultant_y;
 
     double numSlits;
     double delta;

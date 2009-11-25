@@ -334,7 +334,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Render Delay (ms)</string>
+               <string>Render Delay</string>
               </property>
              </widget>
             </item>
@@ -364,25 +364,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QLCDNumber" name="lcdNumber_2">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="segmentStyle">
-             <enum>QLCDNumber::Flat</enum>
-            </property>
-            <property name="value" stdset="0">
-             <double>0.000000000000000</double>
-            </property>
-           </widget>
           </item>
          </layout>
         </item>
@@ -555,22 +536,6 @@
     <hint type="destinationlabel">
      <x>353</x>
      <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>int_speed</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lcdNumber_2</receiver>
-   <slot>display(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>659</x>
-     <y>88</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>677</x>
-     <y>113</y>
     </hint>
    </hints>
   </connection>

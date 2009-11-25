@@ -48,10 +48,6 @@ private:
     QwtPlotScaleItem * xScale;
     QwtPlotScaleItem * yScale;
 
-    QVector<double> vector1_x;
-    QVector<double> vector1_y;
-    QVector<double> vector2_x;
-    QVector<double> vector2_y;
     QVector<double> sumVector_x;
     QVector<double> sumVector_y;
     QVector<double> plotLine_x;

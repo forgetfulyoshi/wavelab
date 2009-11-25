@@ -45,12 +45,15 @@ private:
     void getCurrentValues();
 
     QwtPlotCurve * intWave;
+    QwtPlotCurve * intTrace;
 
     QwtPlotScaleItem * xScale;
     QwtPlotScaleItem * yScale;
 
     QVector<double> intWave_x;
     QVector<double> intWave_y;
+    QVector<double> intTrace_x;
+    QVector<double> intTrace_y;
 
     double numSlits;
     double delta;

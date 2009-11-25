@@ -52,23 +52,11 @@ void VectorWidget::step()
     reset();
     getCurrentValues();
 
-    vector1_x.append(0.0 + yScale->position());
-    vector1_y.append(0.0 + xScale->position());
+    sumVector_x.append(yScale->position());
+    sumVector_y.append(xScale->position());
 
-    vector1_x.append(wave1_amplitude * cos(wave1_frequency * elapsedTime) + vector1_x.front());
-    vector1_y.append(wave1_amplitude * sin(wave1_frequency * elapsedTime) + vector1_y.front());
-
-    vector2_x.append(vector1_x.back());
-    vector2_y.append(vector1_y.back());
-
-    vector2_x.append(wave2_amplitude * cos(wave2_frequency * elapsedTime + phaseShift) + vector2_x.front());
-    vector2_y.append(wave2_amplitude * sin(wave2_frequency * elapsedTime + phaseShift) + vector2_y.front());
-
-    sumVector_x.append(vector1_x.front());
-    sumVector_y.append(vector1_y.front());
-
-    sumVector_x.append(vector2_x.back());
-    sumVector_y.append(vector2_y.back());
+    sumVector_x.append(wave1_amplitude * cos(wave1_frequency * elapsedTime) + wave2_amplitude * cos(wave2_frequency * elapsedTime + phaseShift));
+    sumVector_y.append(wave1_amplitude * sin(wave1_frequency * elapsedTime) + wave2_amplitude * sin(wave2_frequency * elapsedTime + phaseShift));
 
     plotLine_x.append(sumVector_x.back());
     plotLine_y.append(sumVector_y.back());
@@ -89,10 +77,6 @@ void VectorWidget::step()
 
 void VectorWidget::reset()
 {
-    vector1_x.clear();
-    vector1_y.clear();
-    vector2_x.clear();
-    vector2_y.clear();
     sumVector_x.clear();
     sumVector_y.clear();
     plotLine_x.clear();

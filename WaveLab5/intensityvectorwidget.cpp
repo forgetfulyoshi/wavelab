@@ -30,7 +30,8 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 
 IntensityVectorWidget::IntensityVectorWidget(DataContainer * d, QWidget * p):
         LabWidget(d, p),
-        intensityVector(new QwtPlotCurve("IntensityVector")),
+        intensityPhasor(new QwtPlotCurve("Intensity Phasor")),
+        resultantVector(new QwtPlotCurve("Resultant Vector")),
         xScale(new QwtPlotScaleItem(QwtScaleDraw::BottomScale, frameWidth() / 2.0)),
         yScale(new QwtPlotScaleItem(QwtScaleDraw::LeftScale, frameWidth() / 2.0)),
         delta(0)
@@ -44,7 +45,8 @@ IntensityVectorWidget::IntensityVectorWidget(DataContainer * d, QWidget * p):
 
 IntensityVectorWidget::~IntensityVectorWidget()
 {
-    delete intensityVector;
+    delete intensityPhasor;
+    delete resultantVector;
     delete xScale;
     delete yScale;
 }
@@ -63,6 +65,9 @@ void IntensityVectorWidget::step()
         intensity_x.append(x);
         intensity_y.append(y);
 
+        resultant_x.append(x);
+        resultant_y.append(y);
+
         for (int i = 0; i < numSlits; i++) {
             x += cos(i * delta * CONVERSION_FACT);
             y += sin(i * delta * CONVERSION_FACT);
@@ -71,9 +76,20 @@ void IntensityVectorWidget::step()
             intensity_y.append(y);
         }
 
-        intensityVector->setData(intensity_x, intensity_y);
-        intensityVector->setPen(QColor(Qt::red));
-        intensityVector->attach(this);
+        resultant_x.append(x);
+        resultant_y.append(y);
+
+        QPen int_pen = QPen(QColor(Qt::red));
+        int_pen.setWidth(2);
+        intensityPhasor->setData(intensity_x, intensity_y);
+        intensityPhasor->setPen(int_pen);
+        intensityPhasor->attach(this);
+
+        QPen res_pen = QPen(QColor(Qt::blue));
+        res_pen.setWidth(2);
+        resultantVector->setData(resultant_x, resultant_y);
+        resultantVector->setPen(res_pen);
+        resultantVector->attach(this);
 
         replot();
         delta += 1.0;
@@ -91,7 +107,11 @@ void IntensityVectorWidget::clear()
     intensity_x.clear();
     intensity_y.clear();
 
-    intensityVector->detach();
+    resultant_x.clear();
+    resultant_y.clear();
+
+    intensityPhasor->detach();
+    resultantVector->detach();
 
     replot();
 }

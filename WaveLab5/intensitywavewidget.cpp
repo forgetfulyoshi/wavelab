@@ -32,6 +32,7 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 IntensityWaveWidget::IntensityWaveWidget(DataContainer * d, QWidget * p):
         LabWidget(d, p),
         intWave(new QwtPlotCurve("Intensity Wave")),
+        intTrace(new QwtPlotCurve("Intensity Trace")),
         xScale(new QwtPlotScaleItem(QwtScaleDraw::BottomScale)),
         yScale(new QwtPlotScaleItem(QwtScaleDraw::RightScale)),
         delta(0)
@@ -67,6 +68,9 @@ void IntensityWaveWidget::step()
 
         intWave_x.append(delta);
 
+        intTrace_x.append(delta);
+        intTrace_y.append(0.0);
+
         if (delta < 1) {
             intWave_y.append(numSlits * numSlits);
         } else {
@@ -74,11 +78,21 @@ void IntensityWaveWidget::step()
             intWave_y.append(amp * amp);
         }
 
+        intTrace_x.append(intWave_x.back());
+        intTrace_y.append(intWave_y.back());
+
+        intTrace->setData(intTrace_x, intTrace_y);
+        intTrace->setPen(QColor(Qt::blue));
+        intTrace->attach(this);
+
         intWave->setData(intWave_x, intWave_y);
-        intWave->setPen(QColor(Qt::blue));
+        intWave->setPen(QColor(Qt::red));
         intWave->attach(this);
 
         replot();
+
+        intTrace_x.clear();
+        intTrace_y.clear();
     }
 }
 
@@ -87,7 +101,11 @@ void IntensityWaveWidget::reset()
     intWave_x.clear();
     intWave_y.clear();
 
+    intTrace_x.clear();
+    intTrace_y.clear();
+
     intWave->detach();
+    intTrace->detach();
 
     delta = 0.0;
 

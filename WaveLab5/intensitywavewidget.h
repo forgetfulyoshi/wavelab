@@ -29,23 +29,26 @@ class QwtPlotCurve;
 class QwtPlotScaleItem;
 
 class IntensityWaveWidget : public LabWidget {
-    //Q_OBJECT
+
 public:
     IntensityWaveWidget(DataContainer * d, QWidget * parent = 0);
     ~IntensityWaveWidget();
 
-    virtual void setXScale(double); // Parameter ignored
-    virtual void setYScale(double);
+    virtual void setXScale(double); // Overriding LabWidget method, parameter ignored
+    virtual void setYScale(double); // Overriding LabWidget method, parameter ignored
 
 public slots:
-    virtual void step();
-    virtual void reset();
+    virtual void step(); // Advance widget animation by one frame
+    virtual void reset(); // Reset all lines and clear corrosponding data
 
 private:
-    void getCurrentValues();
+    void getCurrentValues(); // Update local values from dataContainer
 
-    QwtPlotCurve * intWave;
-    QwtPlotCurve * intTrace;
+    QwtPlotCurve * intWave; // Red line, Intensity (or Amplitude squared) as a function of phase angle (delta)
+    QwtPlotCurve * intTrace; // Blue line, gives tracing effect to the wave, also Intensity as a function of delta
+
+    QPen * intWave_pen;
+    QPen * intTrace_pen;
 
     QwtPlotScaleItem * xScale;
     QwtPlotScaleItem * yScale;

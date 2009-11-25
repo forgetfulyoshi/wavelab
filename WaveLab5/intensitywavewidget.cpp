@@ -33,6 +33,8 @@ IntensityWaveWidget::IntensityWaveWidget(DataContainer * d, QWidget * p):
         LabWidget(d, p),
         intWave(new QwtPlotCurve("Intensity Wave")),
         intTrace(new QwtPlotCurve("Intensity Trace")),
+        intWave_pen(new QPen(Qt::red)),
+        intTrace_pen(new QPen(Qt::blue)),
         xScale(new QwtPlotScaleItem(QwtScaleDraw::BottomScale)),
         yScale(new QwtPlotScaleItem(QwtScaleDraw::RightScale)),
         delta(0)
@@ -42,13 +44,26 @@ IntensityWaveWidget::IntensityWaveWidget(DataContainer * d, QWidget * p):
 
     yScale->attach(this);
     enableAxis(QwtPlot::yLeft, false);
+
+    //-------------------------------
+    // Modify line widths, 1 is normal
+
+    intWave_pen->setWidthF(1.5);
+    intTrace_pen->setWidthF(1.5);
+    //-------------------------------
+
+    intWave->setPen(*intWave_pen);
+    intTrace->setPen(*intTrace_pen);
+
+
 }
 
 IntensityWaveWidget::~IntensityWaveWidget()
 {
-    intWave->detach();
-
+    delete intWave_pen;
+    delete intTrace_pen;
     delete intWave;
+    delete intTrace;
 }
 
 void IntensityWaveWidget::setXScale(double)
@@ -82,11 +97,9 @@ void IntensityWaveWidget::step()
         intTrace_y.append(intWave_y.back());
 
         intTrace->setData(intTrace_x, intTrace_y);
-        intTrace->setPen(QColor(Qt::blue));
         intTrace->attach(this);
 
         intWave->setData(intWave_x, intWave_y);
-        intWave->setPen(QColor(Qt::red));
         intWave->attach(this);
 
         replot();

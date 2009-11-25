@@ -18,6 +18,20 @@ You should have received a copy of the GNU General Public License
 along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//------------------------------------------------------------------
+// This class is used to maintain all data comming in from
+// the UI and/or data to be used accross multiple widgets.
+// This allows for the code to be kept a bit cleaner, and
+// allows for a central location for data access / modification.
+// All widgets have a pointer to the same DataContainer.
+// There is admitedly the potential for concurency issues with this
+// technique, but this is addressed via the use of QTimers
+// (essentially threads).
+//
+// Data is accessed in the widgets via a pointer to data and the use
+// of enumerated indices.
+//-------------------------------------------------------------------
+
 #ifndef DATACONTAINER_H
 #define DATACONTAINER_H
 
@@ -32,13 +46,13 @@ public:
     enum Data
     {
         Wave1_Amp, Wave1_Freq, Wave2_Amp, Wave2_Freq, PhaseShift, ElapsedTime,
-        NumSlits,
+        NumSlits
             };
 
-    double data[11];
+    double data[7];
 
-    void update();
-    void resetTime();
+    void update(); // Pull current values off the UI and modify any values as needed (i.e. increment ElapsedTime)
+    void resetTime(); // Reset data[ElapsedTime] to 0.0
 
 private:
     Ui::MainWindow * ui;

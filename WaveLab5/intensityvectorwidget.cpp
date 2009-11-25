@@ -32,6 +32,8 @@ IntensityVectorWidget::IntensityVectorWidget(DataContainer * d, QWidget * p):
         LabWidget(d, p),
         intensityPhasor(new QwtPlotCurve("Intensity Phasor")),
         resultantVector(new QwtPlotCurve("Resultant Vector")),
+        intensityPhasor_pen(new QPen(Qt::red)),
+        resultantVector_pen(new QPen(Qt::blue)),
         xScale(new QwtPlotScaleItem(QwtScaleDraw::BottomScale, frameWidth() / 2.0)),
         yScale(new QwtPlotScaleItem(QwtScaleDraw::LeftScale, frameWidth() / 2.0)),
         delta(0)
@@ -41,12 +43,27 @@ IntensityVectorWidget::IntensityVectorWidget(DataContainer * d, QWidget * p):
 
     yScale->attach(this);
     enableAxis(QwtPlot::yLeft, false);
+
+    //----------------------------------
+    // Modify line widths, 1 is normal
+
+    intensityPhasor_pen->setWidthF(1.5);
+    resultantVector_pen->setWidthF(1.5);
+    //----------------------------------
+
+    intensityPhasor->setPen(*intensityPhasor_pen);
+    resultantVector->setPen(*resultantVector_pen);
+
+
+
 }
 
 IntensityVectorWidget::~IntensityVectorWidget()
 {
     delete intensityPhasor;
     delete resultantVector;
+    delete intensityPhasor_pen;
+    delete resultantVector_pen;
     delete xScale;
     delete yScale;
 }
@@ -79,16 +96,11 @@ void IntensityVectorWidget::step()
         resultant_x.append(x);
         resultant_y.append(y);
 
-        QPen int_pen = QPen(QColor(Qt::red));
-        int_pen.setWidth(2);
+
         intensityPhasor->setData(intensity_x, intensity_y);
-        intensityPhasor->setPen(int_pen);
         intensityPhasor->attach(this);
 
-        QPen res_pen = QPen(QColor(Qt::blue));
-        res_pen.setWidth(2);
         resultantVector->setData(resultant_x, resultant_y);
-        resultantVector->setPen(res_pen);
         resultantVector->attach(this);
 
         replot();

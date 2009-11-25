@@ -31,6 +31,9 @@ WaveWidget::WaveWidget(DataContainer * d, QWidget * parent) :
         wave1(new QwtPlotCurve("Wave 1")),
         wave2(new QwtPlotCurve("Wave 2")),
         supWave(new QwtPlotCurve("Superposition Wave")),
+        wave1_pen(new QPen(Qt::green)),
+        wave2_pen(new QPen(Qt::red)),
+        supWave_pen(new QPen(Qt::black)),
         xScale(new QwtPlotScaleItem(QwtScaleDraw::BottomScale, frameWidth() / 2.0)),
         yScale(new QwtPlotScaleItem(QwtScaleDraw::RightScale))
 {
@@ -39,17 +42,28 @@ WaveWidget::WaveWidget(DataContainer * d, QWidget * parent) :
 
     yScale->attach(this);
     enableAxis(QwtPlot::yLeft, false);
+
+    //-------------------------------
+    // Modify line widths, 1 is normal
+
+    wave1_pen->setWidthF(1.5);
+    wave2_pen->setWidthF(1.5);
+    supWave_pen->setWidthF(1.5);
+    //-------------------------------
+
+    wave1->setPen(*wave1_pen);
+    wave2->setPen(*wave2_pen);
+    supWave->setPen(*supWave_pen);
 }
 
 WaveWidget::~WaveWidget()
 {
-    wave1->detach();
-    wave2->detach();
-    supWave->detach();
-
     delete wave1;
     delete wave2;
     delete supWave;
+    delete wave1_pen;
+    delete wave2_pen;
+    delete supWave_pen;
     delete xScale;
     delete yScale;
 }
@@ -70,17 +84,17 @@ void WaveWidget::step()
 
     // Set the data and attach Wave 1 to the graph
     wave1->setData(x, wave1_y);
-    wave1->setPen(QColor(Qt::green));
+
     wave1->attach(this);
 
     // Set the data and attach Wave 2 to the graph
     wave2->setData(x, wave2_y);
-    wave2->setPen(QColor(Qt::red));
+
     wave2->attach(this);
 
     // Set the data and attach the Superposition wave to the graph
     supWave->setData(x, supWave_y);
-    supWave->setPen(QColor(Qt::black));
+
     supWave->attach(this);
 
     // Update the graph with new data

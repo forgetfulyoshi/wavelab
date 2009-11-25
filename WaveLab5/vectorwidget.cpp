@@ -29,6 +29,8 @@ VectorWidget::VectorWidget(DataContainer * d, QWidget *parent) :
         LabWidget(d, parent),
         sumVector(new QwtPlotCurve("Resultant Vector")),
         plotLine(new QwtPlotCurve("Plot Line")),
+        sumVector_pen(new QPen(Qt::black)),
+        plotLine_pen(new QPen(Qt::blue)),
         xScale(new QwtPlotScaleItem(QwtScaleDraw::BottomScale, frameWidth() / 2.0)),
         yScale(new QwtPlotScaleItem(QwtScaleDraw::LeftScale, frameWidth() / 2.0))
 {    
@@ -37,12 +39,24 @@ VectorWidget::VectorWidget(DataContainer * d, QWidget *parent) :
 
     yScale->attach(this);
     enableAxis(QwtPlot::yLeft, false);
+
+    //-------------------------------
+    // Modify line widths, 1 is normal
+
+    sumVector_pen->setWidthF(1.5);
+    plotLine_pen->setWidthF(1.5);
+    //-------------------------------
+
+    sumVector->setPen(*sumVector_pen);
+    plotLine->setPen(*plotLine_pen);
 }
 
 VectorWidget::~VectorWidget()
 {
     delete sumVector;
     delete plotLine;
+    delete sumVector_pen;
+    delete plotLine_pen;
     delete xScale;
     delete yScale;
 }
@@ -65,11 +79,9 @@ void VectorWidget::step()
     plotLine_y.append(plotLine_y.back());
 
     sumVector->setData(sumVector_x, sumVector_y);
-    sumVector->setPen(QColor(Qt::black));
     sumVector->attach(this);
 
     plotLine->setData(plotLine_x, plotLine_y);
-    plotLine->setPen(QColor(Qt::blue));
     plotLine->attach(this);
 
     replot();

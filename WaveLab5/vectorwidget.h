@@ -36,14 +36,18 @@ public:
     ~VectorWidget();
 
 public slots:
-    virtual void step();
-    virtual void reset();
+    virtual void step(); // Advance the widget's animation by one frame
+    virtual void reset(); // Reset the vector and clear corrosponding data
 
 private:
-    void getCurrentValues();
+    void getCurrentValues(); // Update local values from dataConainer
 
-    QwtPlotCurve * sumVector;
-    QwtPlotCurve * plotLine;
+    QwtPlotCurve * sumVector; // Resultant vector of two phasors described via the gui input
+    QwtPlotCurve * plotLine; // Blue line drawn horizontally from the tip of the sumVector to the right edge of the widget.
+                             // Simulates a pen drawing the wave in the next widget
+
+    QPen * sumVector_pen;
+    QPen * plotLine_pen;
 
     QwtPlotScaleItem * xScale;
     QwtPlotScaleItem * yScale;

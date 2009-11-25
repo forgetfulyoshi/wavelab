@@ -30,21 +30,24 @@ class QwtPlotScaleItem;
 
 class IntensityVectorWidget : public LabWidget
 {
-    //Q_OBJECT
+
 public:
     IntensityVectorWidget(DataContainer * d, QWidget * parent = 0);
     ~IntensityVectorWidget();
 
 public slots:
-    virtual void step();
-    virtual void reset();
+    virtual void step(); // Advance widget's animation by one frame
+    virtual void reset(); // Reset phasors/vectors and clear corrosponding data
 
 private:
-    void getCurrentValues();
-    void clear();
+    void getCurrentValues(); // Update local values from dataContainer
+    void clear(); // Used internally in place of reset, allows for a refresh without clearing delta
 
     QwtPlotCurve * intensityPhasor;
     QwtPlotCurve * resultantVector;
+
+    QPen * intensityPhasor_pen;
+    QPen * resultantVector_pen;
 
     QwtPlotScaleItem * xScale;
     QwtPlotScaleItem * yScale;

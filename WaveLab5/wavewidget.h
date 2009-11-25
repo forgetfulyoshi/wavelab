@@ -37,19 +37,21 @@ public:
     virtual void setXScale(double);
 
 public slots:
-    virtual void step();
-    virtual void reset();
-    virtual void show_wave1(int);
-    virtual void show_wave2(int);
+    virtual void step();  // Advance the widget's animaiton by one frame
+    virtual void reset(); // Reset the waves and clear all corrosponding data
+    virtual void show_wave1(int); // Not used, kept just in case
+    virtual void show_wave2(int); // Not used, kept just in case
 
 private:
-    void getCurrentValues();
+    void getCurrentValues(); // Update local values from dataContainer
 
-    //WaveWidget * wavePlot;
+    QwtPlotCurve * wave1; // Green wave, function of time
+    QwtPlotCurve * wave2; // Red wave, function of time
+    QwtPlotCurve * supWave; // Black wave, resultant wave of wave1 and wave2
 
-    QwtPlotCurve * wave1;
-    QwtPlotCurve * wave2;
-    QwtPlotCurve * supWave;
+    QPen * wave1_pen;
+    QPen * wave2_pen;
+    QPen * supWave_pen;
 
     QwtPlotScaleItem * xScale;
     QwtPlotScaleItem * yScale;

@@ -27,8 +27,12 @@ along with WaveLab.  If not, see <http://www.gnu.org/licenses/>.
 
 VectorWidget::VectorWidget(DataContainer * d, QWidget *parent) :
         LabWidget(d, parent),
+        phasor1(new QwtPlotCurve("Phasor 1")),
+        phasor2(new QwtPlotCurve("Phasor 2")),
         sumVector(new QwtPlotCurve("Resultant Vector")),
         plotLine(new QwtPlotCurve("Plot Line")),
+        phasor1_pen(new QPen(Qt::green)),
+        phasor2_pen(new QPen(Qt::red)),
         sumVector_pen(new QPen(Qt::black)),
         plotLine_pen(new QPen(Qt::blue)),
         xScale(new QwtPlotScaleItem(QwtScaleDraw::BottomScale, frameWidth() / 2.0)),
@@ -42,19 +46,26 @@ VectorWidget::VectorWidget(DataContainer * d, QWidget *parent) :
 
     //-------------------------------
     // Modify line widths, 1 is normal
-
+    phasor1_pen->setWidthF(1.5);
+    phasor2_pen->setWidthF(1.5);
     sumVector_pen->setWidthF(1.5);
     plotLine_pen->setWidthF(1.5);
     //-------------------------------
 
+    phasor1->setPen(*phasor1_pen);
+    phasor2->setPen(*phasor2_pen);
     sumVector->setPen(*sumVector_pen);
     plotLine->setPen(*plotLine_pen);
 }
 
 VectorWidget::~VectorWidget()
 {
+    delete phasor1;
+    delete phasor2;
     delete sumVector;
     delete plotLine;
+    delete phasor1_pen;
+    delete phasor2_pen;
     delete sumVector_pen;
     delete plotLine_pen;
     delete xScale;
@@ -66,17 +77,35 @@ void VectorWidget::step()
     reset();
     getCurrentValues();
 
+    phasor1_x.append(yScale->position());
+    phasor1_y.append(xScale->position());
+
+    phasor1_x.append(wave1_amplitude * cos(wave1_frequency * elapsedTime));
+    phasor1_y.append(wave1_amplitude * sin(wave1_frequency * elapsedTime));
+
+    phasor2_x.append(yScale->position());
+    phasor2_y.append(xScale->position());
+
+    phasor2_x.append(wave2_amplitude * cos(wave2_frequency * elapsedTime + phaseShift));
+    phasor2_y.append(wave2_amplitude * sin(wave2_frequency * elapsedTime + phaseShift));
+
     sumVector_x.append(yScale->position());
     sumVector_y.append(xScale->position());
 
-    sumVector_x.append(wave1_amplitude * cos(wave1_frequency * elapsedTime) + wave2_amplitude * cos(wave2_frequency * elapsedTime + phaseShift));
-    sumVector_y.append(wave1_amplitude * sin(wave1_frequency * elapsedTime) + wave2_amplitude * sin(wave2_frequency * elapsedTime + phaseShift));
+    sumVector_x.append(phasor1_x.back() + phasor2_x.back());
+    sumVector_y.append(phasor1_y.back() + phasor2_y.back());
 
     plotLine_x.append(sumVector_x.back());
     plotLine_y.append(sumVector_y.back());
 
     plotLine_x.append(this->frameSize().width());
     plotLine_y.append(plotLine_y.back());
+
+    phasor1->setData(phasor1_x, phasor1_y);
+    phasor1->attach(this);
+
+    phasor2->setData(phasor2_x, phasor2_y);
+    phasor2->attach(this);
 
     sumVector->setData(sumVector_x, sumVector_y);
     sumVector->attach(this);
@@ -89,11 +118,17 @@ void VectorWidget::step()
 
 void VectorWidget::reset()
 {
+    phasor1_x.clear();
+    phasor1_y.clear();
+    phasor2_x.clear();
+    phasor2_y.clear();
     sumVector_x.clear();
     sumVector_y.clear();
     plotLine_x.clear();
     plotLine_y.clear();
 
+    phasor1->detach();
+    phasor2->detach();
     sumVector->detach();
     plotLine->detach();
 

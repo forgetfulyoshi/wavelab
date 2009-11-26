@@ -62,6 +62,8 @@ private slots:
     void supPos_step();
     void supPos_stepWidgets();
     void supPos_reset();
+    void supPos_showA(int);
+    void supPos_showB(int);
 
     void intensity_run();
     void intensity_step();

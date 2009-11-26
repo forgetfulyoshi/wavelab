@@ -277,6 +277,20 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="1">
+             <widget class="QCheckBox" name="showWaveA">
+              <property name="text">
+               <string>Show Wave A</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QCheckBox" name="showWaveB">
+              <property name="text">
+               <string>Show Wave B</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>

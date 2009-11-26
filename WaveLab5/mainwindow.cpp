@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAbout_WaveLab, SIGNAL(triggered()), this, SLOT(show_about()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
+    connect(ui->showWaveA, SIGNAL(stateChanged(int)), this, SLOT(supPos_showA(int)));
+    connect(ui->showWaveB, SIGNAL(stateChanged(int)), this, SLOT(supPos_showB(int)));
+
     setupTab_0();
 
     // Connect superpositon buttons
@@ -80,6 +83,12 @@ void MainWindow::changedTab(int tabIndex)
         if (!(widgets.contains("WaveWidget") && widgets.contains("VectorWidget"))) {
             setupTab_0();
         }
+
+        ui->showWaveA->setCheckState(Qt::Unchecked);
+        ui->showWaveB->setCheckState(Qt::Unchecked);
+
+        widgets["WaveWidget"]->show_wave1(0);
+        widgets["WaveWidget"]->show_wave2(0);
 
         break;
 
@@ -154,8 +163,20 @@ void MainWindow::supPos_reset()
     ui->lcdNumber->display(0.0);
 
     resetWidgets();
-
 }
+
+// Show Wave A
+void MainWindow::supPos_showA(int state)
+{
+    widgets["WaveWidget"]->show_wave1(state);
+}
+
+// Show Wave B
+void MainWindow::supPos_showB(int state)
+{
+    widgets["WaveWidget"]->show_wave2(state);
+}
+
 //-------------------------------------------------
 
 //-------------------------------------------------
@@ -251,6 +272,12 @@ void MainWindow::setupTab_0() // Superposition Tab
     // Place widgets in tab_0_layout
     ui->tab_0_layout->addWidget(widgets["WaveWidget"], 0,1,1,1);
     ui->tab_0_layout->addWidget(widgets["VectorWidget"], 0,0,1,1);
+
+    ui->showWaveA->setCheckState(Qt::Unchecked);
+    ui->showWaveB->setCheckState(Qt::Unchecked);
+
+    widgets["WaveWidget"]->show_wave1(0);
+    widgets["WaveWidget"]->show_wave2(0);
 }
 
 void MainWindow::setupTab_1() // Intensity Tab

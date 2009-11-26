@@ -42,16 +42,24 @@ public slots:
 private:
     void getCurrentValues(); // Update local values from dataConainer
 
+    QwtPlotCurve * phasor1; // Original phasor, determined from Amplitude and Frequency
+    QwtPlotCurve * phasor2; // Original phasor, determined from Amplitude, Frequency, and Phase Shift
     QwtPlotCurve * sumVector; // Resultant vector of two phasors described via the gui input
     QwtPlotCurve * plotLine; // Blue line drawn horizontally from the tip of the sumVector to the right edge of the widget.
                              // Simulates a pen drawing the wave in the next widget
 
+    QPen * phasor1_pen;
+    QPen * phasor2_pen;
     QPen * sumVector_pen;
     QPen * plotLine_pen;
 
     QwtPlotScaleItem * xScale;
     QwtPlotScaleItem * yScale;
 
+    QVector<double> phasor1_x;
+    QVector<double> phasor1_y;
+    QVector<double> phasor2_x;
+    QVector<double> phasor2_y;
     QVector<double> sumVector_x;
     QVector<double> sumVector_y;
     QVector<double> plotLine_x;

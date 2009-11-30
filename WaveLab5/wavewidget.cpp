@@ -84,22 +84,21 @@ void WaveWidget::step()
 
     // Set the data and attach Wave 1 to the graph
     wave1->setData(x, wave1_y);
-
     wave1->attach(this);
 
     // Set the data and attach Wave 2 to the graph
     wave2->setData(x, wave2_y);
-
     wave2->attach(this);
 
     // Set the data and attach the Superposition wave to the graph
     supWave->setData(x, supWave_y);
-
     supWave->attach(this);
+
+    yScale->setPosition(dataContainer->data[DataContainer::ElapsedTime]); // Keep the y axis on the left side
 
     // Update the graph with new data
     replot();
-    yScale->setPosition(dataContainer->data[DataContainer::ElapsedTime]); // Keep the y axis on the left side
+
 }
 
 void WaveWidget::reset()

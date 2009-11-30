@@ -48,15 +48,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAbout_WaveLab, SIGNAL(triggered()), this, SLOT(show_about()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-    connect(ui->showWaveA, SIGNAL(stateChanged(int)), this, SLOT(supPos_showA(int)));
-    connect(ui->showWaveB, SIGNAL(stateChanged(int)), this, SLOT(supPos_showB(int)));
-
     setupTab_0();
 
     // Connect superpositon buttons
     connect(ui->runButton, SIGNAL(clicked()), this, SLOT(supPos_run()));
     connect(ui->stepButton, SIGNAL(clicked()), this, SLOT(supPos_step()));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(supPos_reset()));
+    connect(ui->showWaveA, SIGNAL(stateChanged(int)), this, SLOT(supPos_showA(int)));
+    connect(ui->showWaveB, SIGNAL(stateChanged(int)), this, SLOT(supPos_showB(int)));
 
     // Connect intensity buttons
     connect(ui->int_runButton, SIGNAL(clicked()), this, SLOT(intensity_run()));

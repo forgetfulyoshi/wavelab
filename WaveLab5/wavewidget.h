@@ -39,8 +39,8 @@ public:
 public slots:
     virtual void step();  // Advance the widget's animaiton by one frame
     virtual void reset(); // Reset the waves and clear all corrosponding data
-    virtual void show_wave1(int); // Not used, kept just in case
-    virtual void show_wave2(int); // Not used, kept just in case
+    virtual void show_wave1(int state); // Set Wave1 (Wave A) visibility to state (0 == invisible, 1 == visible)
+    virtual void show_wave2(int state); // Set Wave2 (Wave B) visibility to state (0 == invisible, 1 == visible)
 
 private:
     void getCurrentValues(); // Update local values from dataContainer

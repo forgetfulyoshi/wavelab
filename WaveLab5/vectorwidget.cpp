@@ -31,8 +31,8 @@ VectorWidget::VectorWidget(DataContainer * d, QWidget *parent) :
         phasor2(new QwtPlotCurve("Phasor 2")),
         sumVector(new QwtPlotCurve("Resultant Vector")),
         plotLine(new QwtPlotCurve("Plot Line")),
-        phasor1_pen(new QPen(Qt::green)),
-        phasor2_pen(new QPen(Qt::red)),
+        phasor1_pen(new QPen(Qt::red)),
+        phasor2_pen(new QPen(Qt::green)),
         sumVector_pen(new QPen(Qt::black)),
         plotLine_pen(new QPen(Qt::blue)),
         xScale(new QwtPlotScaleItem(QwtScaleDraw::BottomScale, frameWidth() / 2.0)),
@@ -83,17 +83,17 @@ void VectorWidget::step()
     phasor1_x.append(wave1_amplitude * cos(wave1_frequency * elapsedTime));
     phasor1_y.append(wave1_amplitude * sin(wave1_frequency * elapsedTime));
 
-    phasor2_x.append(yScale->position());
-    phasor2_y.append(xScale->position());
+    phasor2_x.append(phasor1_x.back());
+    phasor2_y.append(phasor1_y.back());
 
-    phasor2_x.append(wave2_amplitude * cos(wave2_frequency * elapsedTime + phaseShift));
-    phasor2_y.append(wave2_amplitude * sin(wave2_frequency * elapsedTime + phaseShift));
+    phasor2_x.append(phasor1_x.back() + wave2_amplitude * cos(wave2_frequency * elapsedTime + phaseShift));
+    phasor2_y.append(phasor1_y.back() + wave2_amplitude * sin(wave2_frequency * elapsedTime + phaseShift));
 
     sumVector_x.append(yScale->position());
     sumVector_y.append(xScale->position());
 
-    sumVector_x.append(phasor1_x.back() + phasor2_x.back());
-    sumVector_y.append(phasor1_y.back() + phasor2_y.back());
+    sumVector_x.append(phasor2_x.back());
+    sumVector_y.append(phasor2_y.back());
 
     plotLine_x.append(sumVector_x.back());
     plotLine_y.append(sumVector_y.back());
@@ -101,10 +101,10 @@ void VectorWidget::step()
     plotLine_x.append(this->frameSize().width());
     plotLine_y.append(plotLine_y.back());
 
-    phasor1->setData(phasor1_x, phasor1_y);
+    phasor1->setData(phasor2_x, phasor2_y); // Sorry, a little hackish, but it's the easiet way to flip the vectors
     phasor1->attach(this);
 
-    phasor2->setData(phasor2_x, phasor2_y);
+    phasor2->setData(phasor1_x, phasor1_y); // Sorry, a little hackish, but it's the easiet way to flip the vectors
     phasor2->attach(this);
 
     sumVector->setData(sumVector_x, sumVector_y);

@@ -28,7 +28,7 @@ win32 {
 
     QWT_ROOT = /usr/local/qwt-5.2.0
 
-} else { # Ubuntu linux
+} else { # Linux, etc.
 
 }
 
